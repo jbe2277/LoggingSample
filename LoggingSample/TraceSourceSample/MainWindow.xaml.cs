@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Waf.Applications;
 using System.Windows;
 
-namespace TraceSourceSample
+namespace LoggingSampleShared
 {
     public partial class MainWindow : Window
     {
