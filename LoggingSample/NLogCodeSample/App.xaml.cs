@@ -46,12 +46,13 @@ namespace NLogCodeSample
             logConfig.DefaultCultureInfo = CultureInfo.InvariantCulture;
             logConfig.AddTarget(fileTarget);
             logConfig.AddTarget(traceTarget);
-            var maxLevel = LogLevel.AllLoggingLevels.Last();
             foreach (var (loggerNamePattern, minLevel) in logSettings)
             {
-                logConfig.AddRule(minLevel, maxLevel, fileTarget, loggerNamePattern);
-                logConfig.AddRule(minLevel, maxLevel, traceTarget, loggerNamePattern);
+                var rule = new LoggingRule(loggerNamePattern, minLevel, fileTarget);
+                rule.Targets.Add(traceTarget);
+                logConfig.LoggingRules.Add(rule);
             }
+
             LogManager.Configuration = logConfig;
 
             NLogHelper.ConfigureTraceSource(SampleLibrary.Logging.Log.Default);
