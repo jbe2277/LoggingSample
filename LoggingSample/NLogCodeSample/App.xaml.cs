@@ -17,7 +17,7 @@ namespace NLogCodeSample
         private static readonly (string loggerNamePattern, LogLevel minLevel)[] logSettings =
         {
             ("NLogCodeSample", LogLevel.Trace),
-            ("SampleLibrary", LogLevel.Trace),  // Use Trace here; this is controlled by TraceSource SwitchLevel
+            ("SampleLibrary", LogLevel.Trace),
         };
 
         private readonly string logFolder;
@@ -29,10 +29,6 @@ namespace NLogCodeSample
                 + Path.DirectorySeparatorChar;
             logFileName = "App.log";
 
-            SampleLibrary.Logging.Log.Default.Listeners.Clear();
-            SampleLibrary.Logging.Log.Default.Listeners.Add(new NLogTraceListener());
-            SampleLibrary.Logging.Log.Default.Switch.Level = SourceLevels.Verbose;
-
             var fileTarget = new FileTarget("fileTarget")
             {
                 FileName = Path.Combine(logFolder, logFileName),
@@ -40,7 +36,12 @@ namespace NLogCodeSample
                 ArchiveAboveSize = 5_000_000,  // 5 MB
                 MaxArchiveFiles = 2,
             };
-            var traceTarget = new TraceTarget("traceTarget") { Layout = fileTarget.Layout, RawWrite = true };
+            var traceTarget = new TraceTarget("traceTarget") 
+            { 
+                Layout = fileTarget.Layout, 
+                RawWrite = true 
+            };
+            
             var logConfig = new LoggingConfiguration();
             logConfig.DefaultCultureInfo = CultureInfo.InvariantCulture;
             logConfig.AddTarget(fileTarget);
@@ -52,6 +53,8 @@ namespace NLogCodeSample
                 logConfig.AddRule(minLevel, maxLevel, traceTarget, loggerNamePattern);
             }
             LogManager.Configuration = logConfig;
+
+            NLogHelper.ConfigureTraceSource(SampleLibrary.Logging.Log.Default);
         }
 
         protected override void OnStartup(StartupEventArgs e)

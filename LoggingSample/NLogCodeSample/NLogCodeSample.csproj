@@ -15,9 +15,4 @@
     <ProjectReference Include="..\SampleLibrary\SampleLibrary.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Include="..\TraceSourceSample\MainWindow.xaml.cs" Link="MainWindow.xaml.cs" />
-    <Page Include="..\TraceSourceSample\MainWindow.xaml" Link="MainWindow.xaml" Generator="MSBuild:Compile" />
-  </ItemGroup>
-
 </Project>
