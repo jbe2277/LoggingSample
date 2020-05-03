@@ -21,6 +21,7 @@ namespace LoggingSampleShared
         {
             traceSource.Listeners.Clear();
             traceSource.Listeners.Add(new NLogTraceListener());
+            // Levels.First -> minLevel (ordered list)
             traceSource.Switch.Level = LogManager.Configuration.LoggingRules.First(x => x.LoggerNamePattern == traceSource.Name).Levels[0].ToSourceLevels();
         }
     }
