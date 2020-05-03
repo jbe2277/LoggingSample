@@ -1,5 +1,4 @@
 ﻿using SampleLibrary.Logging;
-using System.Waf.Foundation;
 
 namespace SampleLibrary
 {

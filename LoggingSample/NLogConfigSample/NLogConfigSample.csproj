@@ -7,11 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="NLog" Version="4.7.0" />
     <PackageReference Include="System.Waf.Wpf" Version="6.0.1" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <ProjectReference Include="..\SampleLibrary\SampleLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\TraceSourceSample\MainWindow.xaml.cs" Link="MainWindow.xaml.cs" />
+    <Page Include="..\TraceSourceSample\MainWindow.xaml" Link="MainWindow.xaml" Generator="MSBuild:Compile" />
+
+    <None Update="NLog.config" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>
