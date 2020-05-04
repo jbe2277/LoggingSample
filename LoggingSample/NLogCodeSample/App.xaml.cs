@@ -32,7 +32,7 @@ namespace NLogCodeSample
             var fileTarget = new FileTarget("fileTarget")
             {
                 FileName = Path.Combine(logFolder, logFileName),
-                Layout = "${date:format=yyyy-MM-dd HH\\:mm\\:ss.ff} [${level:format=FirstCharacter}] ${logger} ${message}  ${exception:format=tostring}",
+                Layout = "${date:format=yyyy-MM-dd HH\\:mm\\:ss.ff} [${level:format=FirstCharacter}] ${processid} ${logger} ${message}  ${exception:format=tostring}",
                 ArchiveAboveSize = 5_000_000,  // 5 MB
                 MaxArchiveFiles = 2,
             };
