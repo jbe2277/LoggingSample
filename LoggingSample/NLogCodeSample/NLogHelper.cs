@@ -1,4 +1,5 @@
 ﻿using NLog;
+using System;
 using System.Diagnostics;
 using System.Linq;
 
@@ -21,8 +22,9 @@ namespace LoggingSampleShared
         {
             traceSource.Listeners.Clear();
             traceSource.Listeners.Add(new NLogTraceListener());
+            var rule = LogManager.Configuration.LoggingRules.FirstOrDefault(x => x.LoggerNamePattern == traceSource.Name) ?? throw new NotSupportedException(traceSource.Name);
             // Levels.First -> minLevel (ordered list)
-            traceSource.Switch.Level = LogManager.Configuration.LoggingRules.First(x => x.LoggerNamePattern == traceSource.Name).Levels[0].ToSourceLevels();
+            traceSource.Switch.Level = rule.Levels.Any() ? rule.Levels[0].ToSourceLevels() : SourceLevels.Off;
         }
     }
 }
