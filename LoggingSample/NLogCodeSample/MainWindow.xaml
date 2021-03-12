@@ -4,8 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        x:Name="mainWindow" Height="300" Width="500">
+        x:Name="mainWindow" Height="350" Width="500">
     <StackPanel Margin="11">
+        <Label Content="ProgressBar shows if App is still responsive" HorizontalAlignment="Center"/>
+        <ProgressBar IsIndeterminate="True" Width="150" Height="5" Margin="5,5,5,20"/>
         <Button Content="Trace Message" Click="TraceMessageClick" Width="150" Margin="5"/>
         <Button Content="Information Message" Click="InfoMessageClick" Width="150" Margin="5"/>
         <Button Content="Warning Message" Click="WarnMessageClick" Width="150" Margin="5"/>
