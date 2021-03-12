@@ -32,6 +32,7 @@ namespace NLogCodeSample
                 FileName = Path.Combine(logFolder, logFileName),
                 Layout = "${date:format=yyyy-MM-dd HH\\:mm\\:ss.ff} [${level:format=FirstCharacter}] ${processid} ${logger} ${message}  ${exception:format=tostring}",
                 ArchiveAboveSize = 10_000,  // 10 kB ... this low size is used just for testing purpose
+                ArchiveNumbering = ArchiveNumberingMode.Sequence,
                 MaxArchiveFiles = 2,
             };
             var traceTarget = new TraceTarget("traceTarget") 
