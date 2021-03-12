@@ -3,10 +3,8 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Waf.Applications;
 using System.Windows;
 
@@ -33,7 +31,7 @@ namespace NLogCodeSample
             {
                 FileName = Path.Combine(logFolder, logFileName),
                 Layout = "${date:format=yyyy-MM-dd HH\\:mm\\:ss.ff} [${level:format=FirstCharacter}] ${processid} ${logger} ${message}  ${exception:format=tostring}",
-                ArchiveAboveSize = 5_000_000,  // 5 MB
+                ArchiveAboveSize = 10_000,  // 10 kB ... this low size is used just for testing purpose
                 MaxArchiveFiles = 2,
             };
             var traceTarget = new TraceTarget("traceTarget") 

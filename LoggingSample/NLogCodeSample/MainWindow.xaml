@@ -10,6 +10,7 @@
         <Button Content="Information Message" Click="InfoMessageClick" Width="150" Margin="5"/>
         <Button Content="Warning Message" Click="WarnMessageClick" Width="150" Margin="5"/>
         <Button Content="Error Message" Click="ErrorMessageClick" Width="150" Margin="5"/>
+        <Button Content="100 Error Messages" Click="ErrorMessages100Click" Width="150" Margin="5"/>
 
         <TextBlock HorizontalAlignment="Center" Margin="5,35,5,5">
             <Run Text="Log: "/>

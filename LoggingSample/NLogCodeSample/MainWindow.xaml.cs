@@ -27,9 +27,14 @@ namespace LoggingSampleShared
 
         private void InfoMessageClick(object sender, RoutedEventArgs e) => sampleObject.SimulateLogInfo(5, 3);
 
-        private void WarnMessageClick(object sender, RoutedEventArgs e) => sampleObject.SimulateLogWarn();
+        private void WarnMessageClick(object sender, RoutedEventArgs e) => sampleObject.SimulateLogWarn(); 
 
         private void ErrorMessageClick(object sender, RoutedEventArgs e) => sampleObject.SimulateLogError();
+
+        private void ErrorMessages100Click(object sender, RoutedEventArgs e)
+        {
+            for (int i = 0; i < 100; i++) sampleObject.SimulateLogError();
+        }
 
         private void LogFileClick(object sender, RoutedEventArgs e)
         {
