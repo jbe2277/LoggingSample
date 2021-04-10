@@ -2,6 +2,7 @@
 using NLog;
 using NLog.Config;
 using NLog.Targets;
+using NLog.Targets.Wrappers;
 using System;
 using System.Globalization;
 using System.IO;
@@ -27,19 +28,23 @@ namespace NLogCodeSample
                 + Path.DirectorySeparatorChar;
             logFileName = "Application.log";
 
-            var fileTarget = new FileTarget("fileTarget")
-            {
-                FileName = Path.Combine(logFolder, logFileName),
-                Layout = "${date:format=yyyy-MM-dd HH\\:mm\\:ss.ff} [${level:format=FirstCharacter}] ${processid} ${logger} ${message}  ${exception:format=tostring}",
-                ArchiveAboveSize = 10_000,  // 10 kB ... this low size is used just for testing purpose
-                MaxArchiveFiles = 2,
-            };
-            var traceTarget = new TraceTarget("traceTarget") 
-            { 
-                Layout = fileTarget.Layout, 
-                RawWrite = true 
-            };
-            
+            var layout = "${date:format=yyyy-MM-dd HH\\:mm\\:ss.ff} [${level:format=FirstCharacter}] ${processid} ${logger} ${message}  ${exception:format=tostring}";
+            var fileTarget = new AsyncTargetWrapper("fileTarget", new FileTarget()
+                {
+                    FileName = Path.Combine(logFolder, logFileName),
+                    Layout = layout,
+                    ArchiveAboveSize = 10_000,  // 10 kB ... this low size is used just for testing purpose
+                    MaxArchiveFiles = 1,
+                    ArchiveNumbering = ArchiveNumberingMode.Rolling
+                })
+            { OverflowAction = AsyncTargetWrapperOverflowAction.Block };
+            var traceTarget = new AsyncTargetWrapper("traceTarget", new TraceTarget() 
+                { 
+                    Layout = layout, 
+                    RawWrite = true 
+                })
+            { OverflowAction = AsyncTargetWrapperOverflowAction.Block };
+
             var logConfig = new LoggingConfiguration();
             logConfig.DefaultCultureInfo = CultureInfo.InvariantCulture;
             logConfig.AddTarget(fileTarget);
@@ -52,7 +57,6 @@ namespace NLogCodeSample
             }
 
             LogManager.Configuration = logConfig;
-
             NLogHelper.ConfigureTraceSource(SampleLibrary.Logging.Log.Default);
         }
 

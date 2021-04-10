@@ -1,6 +1,7 @@
 ﻿using LoggingSampleShared;
 using NLog;
 using NLog.Targets;
+using NLog.Targets.Wrappers;
 using System;
 using System.IO;
 using System.Waf.Applications;
@@ -21,7 +22,7 @@ namespace NLogConfigSample
             Log.Default.Info("{0} {1} is starting; OS: {2}", ApplicationInfo.ProductName, ApplicationInfo.Version, Environment.OSVersion);
             
             // Read fileName from config and show it in the UI
-            string fileName = ((FileTarget)LogManager.Configuration.FindTargetByName("fileTarget")).FileName.Render(new LogEventInfo());
+            string fileName = ((FileTarget)((AsyncTargetWrapper)LogManager.Configuration.FindTargetByName("fileTarget")).WrappedTarget).FileName.Render(new LogEventInfo());
             var logFolder = Path.GetDirectoryName(fileName);
             var logFileName = Path.GetFileName(fileName);
             
