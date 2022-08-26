@@ -1,9 +1,8 @@
 ﻿using NLog;
 
-namespace NLogCodeSample
+namespace NLogCodeSample;
+
+internal static class Log
 {
-    internal static class Log
-    {
-        public static Logger Default { get; } = LogManager.GetLogger("NLogCodeSample");
-    }
+    public static Logger Default { get; } = LogManager.GetLogger("NLogCodeSample");
 }

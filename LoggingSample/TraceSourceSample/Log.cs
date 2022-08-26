@@ -1,9 +1,8 @@
 ﻿using System.Diagnostics;
 
-namespace TraceSourceSample
+namespace TraceSourceSample;
+
+public static class Log
 {
-    public static class Log
-    {
-        public static TraceSource Default { get; } = new TraceSource("TraceSourceSample");
-    }
+    public static TraceSource Default { get; } = new TraceSource("TraceSourceSample");
 }
