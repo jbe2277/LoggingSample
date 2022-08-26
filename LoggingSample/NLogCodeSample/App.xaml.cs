@@ -23,15 +23,15 @@ public partial class App : Application
 
     public App()
     {
-        logFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), ApplicationInfo.ProductName, "Log")
-            + Path.DirectorySeparatorChar;
+        logFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), ApplicationInfo.ProductName, "Log") + Path.DirectorySeparatorChar;
         logFileName = "Application.log";
 
-        var layout = "${date:format=yyyy-MM-dd HH\\:mm\\:ss.ff} [${level:format=FirstCharacter}] ${processid} ${logger} ${message}  ${exception:format=tostring}";
+        var layout = "${date:format=yyyy-MM-dd HH\\:mm\\:ss.ff} [${level:format=FirstCharacter}] ${processid} ${logger} ${message}  ${exception}";
         var fileTarget = new AsyncTargetWrapper("fileTarget", new FileTarget()
             {
                 FileName = Path.Combine(logFolder, logFileName),
                 Layout = layout,
+                ConcurrentWrites = true,
                 ArchiveAboveSize = 10_000,  // 10 kB ... this low size is used just for testing purpose
                 MaxArchiveFiles = 1,
                 ArchiveNumbering = ArchiveNumberingMode.Rolling
