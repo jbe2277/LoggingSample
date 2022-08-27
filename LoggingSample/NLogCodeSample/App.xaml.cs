@@ -1,6 +1,5 @@
 ﻿using LoggingSampleShared;
 using NLog;
-using NLog.Config;
 using NLog.Targets;
 using NLog.Targets.Wrappers;
 using System.Globalization;
@@ -26,8 +25,11 @@ public partial class App : Application
         logFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), ApplicationInfo.ProductName, "Log") + Path.DirectorySeparatorChar;
         logFileName = "Application.log";
 
-        var layout = "${date:format=yyyy-MM-dd HH\\:mm\\:ss.ff} [${level:format=FirstCharacter}] ${processid} ${logger} ${message}  ${exception}";
-        var fileTarget = new AsyncTargetWrapper("fileTarget", new FileTarget()
+        LogManager.Setup().LoadConfiguration(c =>
+        {
+            c.Configuration.DefaultCultureInfo = CultureInfo.InvariantCulture;
+            var layout = "${date:format=yyyy-MM-dd HH\\:mm\\:ss.ff} [${level:format=FirstCharacter}] ${processid} ${logger} ${message}  ${exception}";
+            var fileTarget = c.ForTarget("fileTarget").WriteTo(new FileTarget
             {
                 FileName = Path.Combine(logFolder, logFileName),
                 Layout = layout,
@@ -35,26 +37,18 @@ public partial class App : Application
                 ArchiveAboveSize = 10_000,  // 10 kB ... this low size is used just for testing purpose
                 MaxArchiveFiles = 1,
                 ArchiveNumbering = ArchiveNumberingMode.Rolling
-            })
-        { OverflowAction = AsyncTargetWrapperOverflowAction.Block };
-        var traceTarget = new AsyncTargetWrapper("traceTarget", new TraceTarget() 
-            { 
-                Layout = layout, 
-                RawWrite = true 
-            })
-        { OverflowAction = AsyncTargetWrapperOverflowAction.Block };
+            }).WithAsync(AsyncTargetWrapperOverflowAction.Block);
+            var traceTarget = c.ForTarget("traceTarget").WriteTo(new TraceTarget
+            {
+                Layout = layout,
+                RawWrite = true
+            }).WithAsync(AsyncTargetWrapperOverflowAction.Block);
 
-        var logConfig = new LoggingConfiguration { DefaultCultureInfo = CultureInfo.InvariantCulture };
-        logConfig.AddTarget(fileTarget);
-        logConfig.AddTarget(traceTarget);
-        foreach (var (loggerNamePattern, minLevel) in logSettings)
-        {
-            var rule = new LoggingRule(loggerNamePattern, minLevel, fileTarget);
-            rule.Targets.Add(traceTarget);
-            logConfig.LoggingRules.Add(rule);
-        }
-
-        LogManager.Configuration = logConfig;
+            foreach (var (loggerNamePattern, minLevel) in logSettings)
+            {
+                c.ForLogger(loggerNamePattern).FilterMinLevel(minLevel).WriteTo(fileTarget).WriteTo(traceTarget);
+            }
+        });
         NLogHelper.ConfigureTraceSource(SampleLibrary.Logging.Log.Default);
     }
 
