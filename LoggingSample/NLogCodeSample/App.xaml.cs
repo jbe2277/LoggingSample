@@ -28,12 +28,12 @@ public partial class App : Application
         LogManager.Setup().LoadConfiguration(c =>
         {
             c.Configuration.DefaultCultureInfo = CultureInfo.InvariantCulture;
-            var layout = "${date:format=yyyy-MM-dd HH\\:mm\\:ss.ff} [${level:format=FirstCharacter}] ${processid} ${logger} ${message}  ${exception}";
+            var layout = "${date:universalTime=true:format=yyyy-MM-dd HH\\:mm\\:ss.ff} [${level:format=FirstCharacter}] ${processid} ${logger} ${message} ${exception}";
             var fileTarget = c.ForTarget("fileTarget").WriteTo(new FileTarget
             {
                 FileName = Path.Combine(logFolder, logFileName),
                 Layout = layout,
-                ConcurrentWrites = true,
+                ConcurrentWrites = true,    // Not supported on all platforms! https://github.com/NLog/NLog/wiki/File-target
                 ArchiveAboveSize = 10_000,  // 10 kB ... this low size is used just for testing purpose
                 MaxArchiveFiles = 1,
                 ArchiveNumbering = ArchiveNumberingMode.Rolling
@@ -56,6 +56,14 @@ public partial class App : Application
     {
         base.OnStartup(e);
         Log.Default.Info("{0} {1} is starting; OS: {2}", ApplicationInfo.ProductName, ApplicationInfo.Version, Environment.OSVersion);
+        try
+        {
+            throw new InvalidOperationException("A test exception to log");
+        }
+        catch (Exception ex)
+        {
+            LogManager.GetLogger("NLogCodeSample").Error(ex, "Use NLog error with exception log method.");
+        }
         new MainWindow(logFolder, logFileName).Show();
     }
 
