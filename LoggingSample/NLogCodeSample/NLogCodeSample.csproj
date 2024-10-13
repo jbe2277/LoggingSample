@@ -1,20 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NLog" Version="5.2.3" />
-    <PackageReference Include="System.Waf.Wpf" Version="7.0.0" />
+    <PackageReference Include="NLog" Version="5.3.4" />
+    <PackageReference Include="System.Waf.Wpf" Version="8.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SampleLibrary\SampleLibrary.csproj" />
   </ItemGroup>
-
 </Project>
