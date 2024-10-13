@@ -47,4 +47,23 @@ public partial class MainWindow : Window
             MessageBox.Show(this, ex.Message, "Error: Could not open the log folder", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
+
+    private void ThrowExceptionClick(object sender, RoutedEventArgs e) => throw new InvalidOperationException("Test exception");
+
+    private async void ThrowAwaitedExceptionClick(object sender, RoutedEventArgs e)
+    {
+        await Task.Run(() => { throw new InvalidOperationException("Awaited test exception"); });
+    }
+
+    private void ThrowAsyncExceptionClick(object sender, RoutedEventArgs e)
+    {
+        Task.Run(() => { throw new InvalidOperationException("Async test exception"); });
+    }
+
+    private void RunGCClick(object sender, RoutedEventArgs e)
+    {
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        GC.Collect();
+    }
 }

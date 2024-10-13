@@ -50,20 +50,17 @@ public partial class App : Application
             }
         });
         NLogHelper.ConfigureTraceSource(SampleLibrary.Logging.Log.Default);
+
+//#if !DEBUG
+        AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+        TaskScheduler.UnobservedTaskException += (_, ea) => Log.Default.Warn(ea.Exception, "UnobservedTaskException");
+//#endif
     }
 
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
         Log.Default.Info("{0} {1} is starting; OS: {2}", ApplicationInfo.ProductName, ApplicationInfo.Version, Environment.OSVersion);
-        try
-        {
-            throw new InvalidOperationException("A test exception to log");
-        }
-        catch (Exception ex)
-        {
-            LogManager.GetLogger("NLogCodeSample").Error(ex, "Use NLog error with exception log method.");
-        }
         new MainWindow(logFolder, logFileName).Show();
     }
 
@@ -71,5 +68,21 @@ public partial class App : Application
     {
         Log.Default.Info("{0} closed", ApplicationInfo.ProductName);
         base.OnExit(e);
+    }
+
+    private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+    {
+        var ex = e.ExceptionObject as Exception ?? throw new InvalidOperationException("Unknown exception object");
+        Log.Default.Error(ex, "UnhandledException; IsTerminating={0}", e.IsTerminating);
+
+        var message = string.Format(CultureInfo.CurrentCulture, "Unknown application error\n\n{0}", ex);
+        if (MainWindow?.IsVisible == true)
+        {
+            MessageBox.Show(message, ApplicationInfo.ProductName, MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        else
+        {
+            MessageBox.Show(message, ApplicationInfo.ProductName, MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.ServiceNotification);
+        }
     }
 }
