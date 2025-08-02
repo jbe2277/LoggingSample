@@ -1,10 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace MicrosoftLoggingSample;
 
 internal static partial class Log
 {
-    public static ILogger Default { get; private set; } = null!;
+    public static ILogger Default { get; private set; } = NullLogger.Instance;
 
     public static void Init(ILoggerFactory factory) => Default = factory.CreateLogger("MicrosoftLoggingSample");
 
