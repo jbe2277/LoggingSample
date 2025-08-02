@@ -23,13 +23,13 @@ namespace MicrosoftLoggingSample
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            Log.Default.LogInformation("{productName} {version} is starting; OS: {osVersion}", ApplicationInfo.ProductName, ApplicationInfo.Version, Environment.OSVersion);
+            Log.Default.AppStarting(ApplicationInfo.ProductName, ApplicationInfo.Version, Environment.OSVersion);
             new MainWindow("", "See Visual Studio Output View during Debugging").Show();
         }
 
         protected override void OnExit(ExitEventArgs e)
         {
-            Log.Default.LogInformation("{productName} closed", ApplicationInfo.ProductName);
+            Log.Default.AppClosed(ApplicationInfo.ProductName);
             base.OnExit(e);
         }
     }
