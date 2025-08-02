@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 
 namespace SampleLibrary.Logging
@@ -11,6 +12,7 @@ namespace SampleLibrary.Logging
         /// <returns>Indicates, if a log message of type Trace (Verbose) will be processed.</returns>
         public static bool IsTraceEnabled(this TraceSource traceSource)
         {
+            if (traceSource is null) throw new ArgumentNullException(nameof(traceSource));
             return traceSource.Switch.ShouldTrace(TraceEventType.Verbose);
         }
 
@@ -19,6 +21,7 @@ namespace SampleLibrary.Logging
         /// <returns>Indicates, if a log message of type Information will be processed.</returns>
         public static bool IsInfoEnabled(this TraceSource traceSource)
         {
+            if (traceSource is null) throw new ArgumentNullException(nameof(traceSource));
             return traceSource.Switch.ShouldTrace(TraceEventType.Information);
         }
 
@@ -27,6 +30,7 @@ namespace SampleLibrary.Logging
         /// <returns>Indicates, if a log message of type Warning will be processed.</returns>
         public static bool IsWarnEnabled(this TraceSource traceSource)
         {
+            if (traceSource is null) throw new ArgumentNullException(nameof(traceSource));
             return traceSource.Switch.ShouldTrace(TraceEventType.Warning);
         }
 
@@ -35,6 +39,7 @@ namespace SampleLibrary.Logging
         /// <returns>Indicates, if a log message of type Error will be processed.</returns>
         public static bool IsErrorEnabled(this TraceSource traceSource)
         {
+            if (traceSource is null) throw new ArgumentNullException(nameof(traceSource));
             return traceSource.Switch.ShouldTrace(TraceEventType.Error);
         }
 
@@ -50,7 +55,7 @@ namespace SampleLibrary.Logging
         /// <param name="traceSource">The trace source.</param>
         /// <param name="format">A composite format string.</param>
         /// <param name="arguments">An object array that contains zero or more objects to format.</param>
-        public static void Trace(this TraceSource traceSource, [Localizable(false)] string format, params object[] arguments)
+        public static void Trace(this TraceSource traceSource, [Localizable(false)] string format, params object?[] arguments)
         {
             if (IsTraceEnabled(traceSource)) traceSource.TraceEvent(TraceEventType.Verbose, 0, format, arguments);
         }
@@ -67,7 +72,7 @@ namespace SampleLibrary.Logging
         /// <param name="traceSource">The trace source.</param>
         /// <param name="format">A composite format string.</param>
         /// <param name="arguments">An object array that contains zero or more objects to format.</param>
-        public static void Info(this TraceSource traceSource, [Localizable(false)] string format, params object[] arguments)
+        public static void Info(this TraceSource traceSource, [Localizable(false)] string format, params object?[] arguments)
         {
             if (IsInfoEnabled(traceSource)) traceSource.TraceEvent(TraceEventType.Information, 0, format, arguments);
         }
@@ -84,7 +89,7 @@ namespace SampleLibrary.Logging
         /// <param name="traceSource">The trace source.</param>
         /// <param name="format">A composite format string.</param>
         /// <param name="arguments">An object array that contains zero or more objects to format.</param>
-        public static void Warn(this TraceSource traceSource, [Localizable(false)] string format, params object[] arguments)
+        public static void Warn(this TraceSource traceSource, [Localizable(false)] string format, params object?[] arguments)
         {
             if (IsWarnEnabled(traceSource)) traceSource.TraceEvent(TraceEventType.Warning, 0, format, arguments);
         }
@@ -101,7 +106,7 @@ namespace SampleLibrary.Logging
         /// <param name="traceSource">The trace source.</param>
         /// <param name="format">A composite format string.</param>
         /// <param name="arguments">An object array that contains zero or more objects to format.</param>
-        public static void Error(this TraceSource traceSource, [Localizable(false)] string format, params object[] arguments)
+        public static void Error(this TraceSource traceSource, [Localizable(false)] string format, params object?[] arguments)
         {
             if (IsErrorEnabled(traceSource)) traceSource.TraceEvent(TraceEventType.Error, 0, format, arguments);
         }
