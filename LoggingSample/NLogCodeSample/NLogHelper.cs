@@ -1,27 +1,17 @@
 ﻿using NLog;
-using System.Diagnostics;
 
 namespace LoggingSampleShared;
 
 internal static class NLogHelper
 {
-    public static SourceLevels ToSourceLevels(this LogLevel level)
+    public static Microsoft.Extensions.Logging.LogLevel ToMSLogLevel(this LogLevel level)
     {
-        if (level == LogLevel.Trace) return SourceLevels.Verbose;
-        if (level == LogLevel.Debug) return SourceLevels.Verbose;
-        if (level == LogLevel.Info) return SourceLevels.Information;
-        if (level == LogLevel.Warn) return SourceLevels.Warning;
-        if (level == LogLevel.Error) return SourceLevels.Error;
-        if (level == LogLevel.Fatal) return SourceLevels.Critical;
-        return SourceLevels.Off;
-    }
-
-    public static void ConfigureTraceSource(TraceSource traceSource)
-    {
-        traceSource.Listeners.Clear();
-        traceSource.Listeners.Add(new NLogTraceListener());
-        var rule = LogManager.Configuration.LoggingRules.FirstOrDefault(x => x.LoggerNamePattern == traceSource.Name) ?? throw new NotSupportedException(traceSource.Name);
-        // Levels.First -> minLevel (ordered list)
-        traceSource.Switch.Level = rule.Levels.Any() ? rule.Levels[0].ToSourceLevels() : SourceLevels.Off;
+        if (level == LogLevel.Trace) return Microsoft.Extensions.Logging.LogLevel.Trace;
+        if (level == LogLevel.Debug) return Microsoft.Extensions.Logging.LogLevel.Debug;
+        if (level == LogLevel.Info) return Microsoft.Extensions.Logging.LogLevel.Information;
+        if (level == LogLevel.Warn) return Microsoft.Extensions.Logging.LogLevel.Warning;
+        if (level == LogLevel.Error) return Microsoft.Extensions.Logging.LogLevel.Error;
+        if (level == LogLevel.Fatal) return Microsoft.Extensions.Logging.LogLevel.Critical;
+        return Microsoft.Extensions.Logging.LogLevel.None;
     }
 }

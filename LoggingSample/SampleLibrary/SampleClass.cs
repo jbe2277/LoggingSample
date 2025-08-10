@@ -1,22 +1,23 @@
-﻿using SampleLibrary.Logging;
+﻿using Microsoft.Extensions.Logging;
+using SampleLibrary.Logging;
 
 namespace SampleLibrary
 {
     public class SampleClass
     {
-        public void SimulateLogTrace(string text) => Log.Default.Trace("Trace message: {0}", text);
+        public void SimulateLogTrace(string text) => Log.Default.TraceMessage(text);
 
         public void SimulateLogInfo(int a, int b) 
         {
-            if (Log.Default.IsInfoEnabled())
+            if (Log.Default.IsEnabled(LogLevel.Information))
             {
                 var c = a * b;
-                Log.Default.Info("Info message: {0}", c);
+                Log.Default.InfoMessage(c);
             }
         }
 
-        public void SimulateLogWarn() => Log.Default.Warn("Warn message");
+        public void SimulateLogWarn() => Log.Default.WarnMessage();
 
-        public void SimulateLogError() => Log.Default.Error("Error message");
+        public void SimulateLogError() => Log.Default.ErrorMessage();
     }
 }

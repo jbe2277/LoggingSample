@@ -9,7 +9,7 @@ namespace MicrosoftLoggingSample
     {
         public App()
         {
-            using var loggerFactory = LoggerFactory.Create(x =>
+            var loggerFactory = LoggerFactory.Create(x =>
             {
                 x.AddFilter("SampleLibrary", LogLevel.Trace)
                  .AddFilter("MicrosoftLoggingSample", LogLevel.Trace)
@@ -17,7 +17,7 @@ namespace MicrosoftLoggingSample
             });
 
             MicrosoftLoggingSample.Log.Init(loggerFactory);
-            LoggerHelper.ConfigureTraceSource(SampleLibrary.Logging.Log.Default, loggerFactory);
+            SampleLibrary.Logging.Log.Init(loggerFactory);
         }
 
         protected override void OnStartup(StartupEventArgs e)

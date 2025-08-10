@@ -1,11 +1,14 @@
 ﻿using LoggingSampleShared;
+using Microsoft.Extensions.Logging;
 using NLog;
+using NLog.Extensions.Logging;
 using NLog.Targets;
 using NLog.Targets.Wrappers;
 using System.Globalization;
 using System.IO;
 using System.Waf.Applications;
 using System.Windows;
+using LogLevel = NLog.LogLevel;
 
 namespace NLogCodeSample;
 
@@ -49,9 +52,17 @@ public partial class App : Application
                 c.ForLogger(loggerNamePattern).FilterMinLevel(minLevel).WriteTo(fileTarget).WriteTo(traceTarget);
             }
         });
-        NLogHelper.ConfigureTraceSource(SampleLibrary.Logging.Log.Default);
+        var loggerFactory = LoggerFactory.Create(builder =>
+        {
+            foreach (var x in logSettings)
+            {
+                builder.AddFilter(x.loggerNamePattern, x.minLevel.ToMSLogLevel());
+            }
+            builder.AddNLog();
+        });
+        SampleLibrary.Logging.Log.Init(loggerFactory);
 
-//#if !DEBUG
+        //#if !DEBUG
         AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
         TaskScheduler.UnobservedTaskException += (_, ea) => Log.Default.Warn(ea.Exception, "UnobservedTaskException");
 //#endif
@@ -67,7 +78,7 @@ public partial class App : Application
     protected override void OnExit(ExitEventArgs e)
     {
         Log.Default.Info("{0} closed", ApplicationInfo.ProductName);
-        base.OnExit(e);
+        base.OnExit(e);        
     }
 
     private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
