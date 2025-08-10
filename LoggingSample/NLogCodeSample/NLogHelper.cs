@@ -21,7 +21,6 @@ internal static class NLogHelper
         traceSource.Listeners.Clear();
         traceSource.Listeners.Add(new NLogTraceListener());
         var rule = LogManager.Configuration.LoggingRules.FirstOrDefault(x => x.LoggerNamePattern == traceSource.Name) ?? throw new NotSupportedException(traceSource.Name);
-        // Levels.First -> minLevel (ordered list)
-        traceSource.Switch.Level = rule.Levels.Any() ? rule.Levels[0].ToSourceLevels() : SourceLevels.Off;
+        traceSource.Switch.Level = rule.Levels.Min()?.ToSourceLevels() ?? SourceLevels.Off;
     }
 }
