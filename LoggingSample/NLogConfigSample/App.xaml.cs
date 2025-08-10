@@ -1,7 +1,5 @@
 ﻿using LoggingSampleShared;
-using Microsoft.Extensions.Logging;
 using NLog;
-using NLog.Extensions.Logging;
 using NLog.Targets;
 using NLog.Targets.Wrappers;
 using System.IO;
@@ -14,14 +12,7 @@ public partial class App : Application
 {
     public App()
     {
-        var loggerFactory = LoggerFactory.Create(builder =>
-        {
-            foreach (var x in LogManager.Configuration.LoggingRules)
-            {
-                builder.AddFilter(x.LoggerNamePattern, x.Levels[0].ToMSLogLevel());
-            }
-            builder.AddNLog();
-        });
+        var loggerFactory = NLogHelper.CreateLoggerFactory();
         SampleLibrary.Logging.Log.Init(loggerFactory);
     }
 

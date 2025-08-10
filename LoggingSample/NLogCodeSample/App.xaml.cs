@@ -52,17 +52,10 @@ public partial class App : Application
                 c.ForLogger(loggerNamePattern).FilterMinLevel(minLevel).WriteTo(fileTarget).WriteTo(traceTarget);
             }
         });
-        var loggerFactory = LoggerFactory.Create(builder =>
-        {
-            foreach (var x in logSettings)
-            {
-                builder.AddFilter(x.loggerNamePattern, x.minLevel.ToMSLogLevel());
-            }
-            builder.AddNLog();
-        });
+        var loggerFactory = NLogHelper.CreateLoggerFactory();
         SampleLibrary.Logging.Log.Init(loggerFactory);
 
-        //#if !DEBUG
+//#if !DEBUG
         AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
         TaskScheduler.UnobservedTaskException += (_, ea) => Log.Default.Warn(ea.Exception, "UnobservedTaskException");
 //#endif
