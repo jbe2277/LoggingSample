@@ -18,9 +18,10 @@ internal static class NLogHelper
 
     public static void ConfigureTraceSource(TraceSource traceSource)
     {
+        var config = LogManager.Configuration ?? throw new InvalidOperationException("LogManager.Configuration is null");
         traceSource.Listeners.Clear();
         traceSource.Listeners.Add(new NLogTraceListener());
-        var rule = LogManager.Configuration.LoggingRules.FirstOrDefault(x => x.LoggerNamePattern == traceSource.Name) ?? throw new NotSupportedException(traceSource.Name);
+        var rule = config.LoggingRules.FirstOrDefault(x => x.LoggerNamePattern == traceSource.Name) ?? throw new NotSupportedException(traceSource.Name);
         traceSource.Switch.Level = rule.Levels.Min()?.ToSourceLevels() ?? SourceLevels.Off;
     }
 }
