@@ -15,10 +15,10 @@ namespace NLogCodeSample;
 public partial class App : Application
 {
     private static readonly (string loggerNamePattern, LogLevel minLevel)[] logSettings =
-    {
+    [
         ("NLogCodeSample", LogLevel.Trace),
         ("SampleLibrary", LogLevel.Trace),
-    };
+    ];
 
     private readonly string logFolder;
     private readonly string logFileName;
@@ -32,14 +32,13 @@ public partial class App : Application
         {
             c.Configuration.DefaultCultureInfo = CultureInfo.InvariantCulture;
             var layout = "${date:universalTime=true:format=yyyy-MM-dd HH\\:mm\\:ss.ff} [${level:format=FirstCharacter}] ${processid} ${logger} ${message} ${exception}";
-            var fileTarget = c.ForTarget("fileTarget").WriteTo(new FileTarget
+            var fileName = Path.Combine(logFolder, logFileName);
+            var fileTarget = c.ForTarget("fileTarget").WriteTo(new AtomicFileTarget
             {
-                FileName = Path.Combine(logFolder, logFileName),
+                FileName = fileName,
                 Layout = layout,
-                ConcurrentWrites = true,    // Not supported on all platforms! https://github.com/NLog/NLog/wiki/File-target
                 ArchiveAboveSize = 10_000,  // 10 kB ... this low size is used just for testing purpose
-                MaxArchiveFiles = 1,
-                ArchiveNumbering = ArchiveNumberingMode.Rolling
+                MaxArchiveFiles = 2,
             }).WithAsync(AsyncTargetWrapperOverflowAction.Block);
             var traceTarget = c.ForTarget("traceTarget").WriteTo(new TraceTarget
             {
@@ -71,13 +70,15 @@ public partial class App : Application
     protected override void OnExit(ExitEventArgs e)
     {
         Log.Default.Info("{0} closed", ApplicationInfo.ProductName);
-        base.OnExit(e);        
+        LogManager.LogFactory.FlushAsync(CancellationToken.None).GetAwaiter().GetResult();
+        base.OnExit(e);
     }
 
     private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
         var ex = e.ExceptionObject as Exception ?? throw new InvalidOperationException("Unknown exception object");
         Log.Default.Error(ex, "UnhandledException; IsTerminating={0}", e.IsTerminating);
+        LogManager.LogFactory.FlushAsync(CancellationToken.None).GetAwaiter().GetResult();
 
         var message = string.Format(CultureInfo.CurrentCulture, "Unknown application error\n\n{0}", ex);
         if (MainWindow?.IsVisible == true)

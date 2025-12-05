@@ -20,9 +20,11 @@ public partial class App : Application
     {
         base.OnStartup(e);
         Log.Default.Info("{0} {1} is starting; OS: {2}", ApplicationInfo.ProductName, ApplicationInfo.Version, Environment.OSVersion);
-        
+
         // Read fileName from config and show it in the UI
-        string fileName = ((FileTarget)((AsyncTargetWrapper)LogManager.Configuration.FindTargetByName("fileTarget")).WrappedTarget).FileName.Render(new LogEventInfo());
+        var config = LogManager.Configuration ?? throw new InvalidOperationException("LogManager.Configuration is null");
+        var fileTarget = (FileTarget?)((AsyncTargetWrapper?)config.FindTargetByName("fileTarget"))?.WrappedTarget ?? throw new InvalidOperationException("NLog fileTarget is null");
+        string fileName = fileTarget.FileName.Render(new LogEventInfo());
         var logFolder = Path.GetDirectoryName(fileName) ?? throw new InvalidOperationException("Could not get the directory name from the log file name.");
         var logFileName = Path.GetFileName(fileName);
         
