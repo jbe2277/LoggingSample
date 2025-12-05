@@ -34,7 +34,6 @@ public partial class App : Application
             {
                 FileName = fileName,
                 Layout = layout,
-                ConcurrentWrites = true,
                 ArchiveAboveSize = 10_000,  // 10 kB ... this low size is used just for testing purpose
                 MaxArchiveFiles = 1,
             }).WithAsync(AsyncTargetWrapperOverflowAction.Block);
