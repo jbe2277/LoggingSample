@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Extensions.Logging;
+using System.Diagnostics;
 using LogLevel = NLog.LogLevel;
 
 namespace LoggingSampleShared;
