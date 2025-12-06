@@ -3,7 +3,7 @@ using SampleLibrary2.Logging;
 
 namespace SampleLibrary2;
 
-public class SampleClass
+public class SampleClass2
 {
     public void SimulateLogTrace(string text) => Log.Default.TraceMessage(text);
 

@@ -1,4 +1,5 @@
 ﻿using SampleLibrary;
+using SampleLibrary2;
 using System.Diagnostics;
 using System.Waf.Applications;
 using System.Windows;
@@ -8,6 +9,7 @@ namespace LoggingSampleShared;
 public partial class MainWindow : Window
 {
     private readonly SampleClass sampleObject;
+    private readonly SampleClass2 sampleObject2;
 
     public MainWindow(string logFolder, string logFileName)
     {
@@ -16,23 +18,44 @@ public partial class MainWindow : Window
         InitializeComponent();
         Title = ApplicationInfo.ProductName;
         sampleObject = new SampleClass();
+        sampleObject2 = new SampleClass2();
     }
 
     public string LogFolder { get; }
 
     public string LogFileName { get; }
 
-    private void TraceMessageClick(object sender, RoutedEventArgs e) => sampleObject.SimulateLogTrace("Bill");
+    private void TraceMessageClick(object sender, RoutedEventArgs e)
+    {
+        sampleObject.SimulateLogTrace("Bill");
+        sampleObject2.SimulateLogTrace("Bill");
+    }
 
-    private void InfoMessageClick(object sender, RoutedEventArgs e) => sampleObject.SimulateLogInfo(5, 3);
+    private void InfoMessageClick(object sender, RoutedEventArgs e) 
+    { 
+        sampleObject.SimulateLogInfo(5, 3);
+        sampleObject2.SimulateLogInfo(5, 3);
+    }
 
-    private void WarnMessageClick(object sender, RoutedEventArgs e) => sampleObject.SimulateLogWarn(); 
+    private void WarnMessageClick(object sender, RoutedEventArgs e) 
+    { 
+        sampleObject.SimulateLogWarn();
+        sampleObject2.SimulateLogWarn();
+    }
 
-    private void ErrorMessageClick(object sender, RoutedEventArgs e) => sampleObject.SimulateLogError();
+    private void ErrorMessageClick(object sender, RoutedEventArgs e)
+    {
+        sampleObject.SimulateLogError();
+        sampleObject2.SimulateLogError();
+    }
 
     private void ErrorMessages100Click(object sender, RoutedEventArgs e)
     {
-        for (int i = 0; i < 100; i++) sampleObject.SimulateLogError();
+        for (int i = 0; i < 50; i++)
+        {
+            sampleObject.SimulateLogError();
+            sampleObject2.SimulateLogError();
+        }
     }
 
     private void LogFileClick(object sender, RoutedEventArgs e)
