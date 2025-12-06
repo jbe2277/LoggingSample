@@ -19,18 +19,6 @@ internal static class NLogHelper
         return SourceLevels.Off;
     }
 
-    public static ILoggerFactory CreateLoggerFactory()
-    {
-        return LoggerFactory.Create(builder =>
-        {
-            foreach (var x in LogManager.Configuration.LoggingRules)
-            {
-                builder.AddFilter(x.LoggerNamePattern, x.Levels.Min()?.ToMSLogLevel() ?? Microsoft.Extensions.Logging.LogLevel.None);
-            }
-            builder.AddNLog();
-        });
-    }
-
     public static void ConfigureTraceSource(TraceSource traceSource)
     {
         var config = LogManager.Configuration ?? throw new InvalidOperationException("LogManager.Configuration is null");
@@ -38,6 +26,19 @@ internal static class NLogHelper
         traceSource.Listeners.Add(new NLogTraceListener());
         var rule = config.LoggingRules.FirstOrDefault(x => x.LoggerNamePattern == traceSource.Name) ?? throw new NotSupportedException(traceSource.Name);
         traceSource.Switch.Level = rule.Levels.Min()?.ToSourceLevels() ?? SourceLevels.Off;
+    }
+
+    public static ILoggerFactory CreateLoggerFactory()
+    {
+        return LoggerFactory.Create(builder =>
+        {
+            var configuration = LogManager.Configuration ?? throw new InvalidOperationException("LogManager.Configuration is null");
+            foreach (var x in configuration.LoggingRules)
+            {
+                builder.AddFilter(x.LoggerNamePattern, x.Levels.Min()?.ToMSLogLevel() ?? Microsoft.Extensions.Logging.LogLevel.None);
+            }
+            builder.AddNLog();
+        });
     }
 
     public static Microsoft.Extensions.Logging.LogLevel ToMSLogLevel(this LogLevel level)
