@@ -1,14 +1,11 @@
 ﻿using LoggingSampleShared;
-using Microsoft.Extensions.Logging;
 using NLog;
-using NLog.Extensions.Logging;
 using NLog.Targets;
 using NLog.Targets.Wrappers;
 using System.Globalization;
 using System.IO;
 using System.Waf.Applications;
 using System.Windows;
-using LogLevel = NLog.LogLevel;
 
 namespace NLogCodeSample;
 
@@ -18,6 +15,7 @@ public partial class App : Application
     [
         ("NLogCodeSample", LogLevel.Trace),
         ("SampleLibrary", LogLevel.Trace),
+        ("SampleLibrary2", LogLevel.Trace),
     ];
 
     private readonly string logFolder;
@@ -51,8 +49,9 @@ public partial class App : Application
                 c.ForLogger(loggerNamePattern).FilterMinLevel(minLevel).WriteTo(fileTarget).WriteTo(traceTarget);
             }
         });
+        NLogHelper.ConfigureTraceSource(SampleLibrary.Logging.Log.Default);
         var loggerFactory = NLogHelper.CreateLoggerFactory();
-        SampleLibrary.Logging.Log.Init(loggerFactory);
+        SampleLibrary2.Logging.Log.Init(loggerFactory);
 
 //#if !DEBUG
         AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
