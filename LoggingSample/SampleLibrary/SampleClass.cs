@@ -6,7 +6,7 @@ namespace SampleLibrary
     {
         public void SimulateLogTrace(string text) => Log.Default.Trace("Trace message: {0}", text);
 
-        public void SimulateLogInfo(int a, int b)
+        public void SimulateLogInfo(int a, int b) 
         {
             if (Log.Default.IsInfoEnabled())
             {

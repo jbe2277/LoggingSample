@@ -2,7 +2,7 @@
 
 namespace SampleLibrary.Logging
 {
-    public static partial class Log
+    public static class Log
     {
         public static TraceSource Default { get; } = new TraceSource("SampleLibrary");
     }
