@@ -12,12 +12,14 @@ namespace MicrosoftLoggingSample
             using var loggerFactory = LoggerFactory.Create(x =>
             {
                 x.AddFilter("SampleLibrary", LogLevel.Trace)
+                 .AddFilter("SampleLibrary2", LogLevel.Trace)
                  .AddFilter("MicrosoftLoggingSample", LogLevel.Trace)
                  .AddDebug();
             });
 
             MicrosoftLoggingSample.Log.Init(loggerFactory);
             LoggerHelper.ConfigureTraceSource(SampleLibrary.Logging.Log.Default, loggerFactory);
+            SampleLibrary2.Logging.Log.Init(loggerFactory);
         }
 
         protected override void OnStartup(StartupEventArgs e)

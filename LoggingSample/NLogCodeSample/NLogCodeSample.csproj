@@ -10,10 +10,12 @@
   <ItemGroup>
     <PackageReference Include="NLog.Targets.AtomicFile" Version="6.0.6" />
     <PackageReference Include="NLog.Targets.Trace" Version="6.0.3" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="6.1.0" />
     <PackageReference Include="System.Waf.Wpf" Version="8.1.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SampleLibrary\SampleLibrary.csproj" />
+    <ProjectReference Include="..\SampleLibrary2\SampleLibrary2.csproj" />
   </ItemGroup>
 </Project>

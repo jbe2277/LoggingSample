@@ -15,6 +15,7 @@ public partial class App : Application
     [
         ("NLogCodeSample", LogLevel.Trace),
         ("SampleLibrary", LogLevel.Trace),
+        ("SampleLibrary2", LogLevel.Trace),
     ];
 
     private readonly string logFolder;
@@ -49,6 +50,8 @@ public partial class App : Application
             }
         });
         NLogHelper.ConfigureTraceSource(SampleLibrary.Logging.Log.Default);
+        var loggerFactory = NLogHelper.CreateLoggerFactory();
+        SampleLibrary2.Logging.Log.Init(loggerFactory);
 
 //#if !DEBUG
         AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;

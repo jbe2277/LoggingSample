@@ -13,6 +13,8 @@ public partial class App : Application
     public App()
     {
         NLogHelper.ConfigureTraceSource(SampleLibrary.Logging.Log.Default);
+        var loggerFactory = NLogHelper.CreateLoggerFactory();
+        SampleLibrary2.Logging.Log.Init(loggerFactory);
     }
 
     protected override void OnStartup(StartupEventArgs e)
