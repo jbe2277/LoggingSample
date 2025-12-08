@@ -13,11 +13,11 @@ namespace MicrosoftLoggingSample
             {
                 x.AddFilter("SampleLibrary", LogLevel.Trace)
                  .AddFilter(SampleLibrary2.Logging.Log.CategoryName, LogLevel.Trace)
-                 .AddFilter("MicrosoftLoggingSample", LogLevel.Trace)
+                 .AddFilter(MicrosoftLoggingSample.Logger.CategoryName, LogLevel.Trace)
                  .AddDebug();
             });
 
-            MicrosoftLoggingSample.Log.Init(loggerFactory);
+            MicrosoftLoggingSample.Logger.Init(loggerFactory);
             LoggerHelper.ConfigureTraceSource(SampleLibrary.Logging.Log.Default, loggerFactory);
             SampleLibrary2.Logging.Log.Init(loggerFactory);
         }
@@ -25,13 +25,13 @@ namespace MicrosoftLoggingSample
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            Log.Default.AppStarting(ApplicationInfo.ProductName, ApplicationInfo.Version, Environment.OSVersion);
+            Logger.Default.AppStarting(ApplicationInfo.ProductName, ApplicationInfo.Version, Environment.OSVersion);
             new MainWindow("", "See Visual Studio Output View during Debugging").Show();
         }
 
         protected override void OnExit(ExitEventArgs e)
         {
-            Log.Default.AppClosed(ApplicationInfo.ProductName);
+            Logger.Default.AppClosed(ApplicationInfo.ProductName);
             base.OnExit(e);
         }
     }
