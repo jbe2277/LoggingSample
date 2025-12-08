@@ -12,7 +12,7 @@ namespace MicrosoftLoggingSample
             using var loggerFactory = LoggerFactory.Create(x =>
             {
                 x.AddFilter("SampleLibrary", LogLevel.Trace)
-                 .AddFilter("SampleLibrary2", LogLevel.Trace)
+                 .AddFilter(SampleLibrary2.Logging.Log.CategoryName, LogLevel.Trace)
                  .AddFilter("MicrosoftLoggingSample", LogLevel.Trace)
                  .AddDebug();
             });

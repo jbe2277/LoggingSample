@@ -1,8 +1,14 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
-namespace SampleLibrary2.Logging;
+namespace SampleLibrary2;
 
-internal static partial class LogMessages
+internal static class Logger
+{
+    public static ILogger Default { get; internal set; } = NullLogger.Instance;
+}
+
+internal static partial class LoggerMessageExtensions
 {
     [LoggerMessage(Level = LogLevel.Trace, Message = "Trace message: {text}")]
     public static partial void TraceMessage(this ILogger logger, string text);

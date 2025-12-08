@@ -15,7 +15,7 @@ public partial class App : Application
     [
         ("NLogCodeSample", LogLevel.Trace),
         ("SampleLibrary", LogLevel.Trace),
-        ("SampleLibrary2", LogLevel.Trace),
+        (SampleLibrary2.Logging.Log.CategoryName, LogLevel.Trace),
     ];
 
     private readonly string logFolder;
