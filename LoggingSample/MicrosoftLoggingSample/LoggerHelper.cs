@@ -5,14 +5,15 @@ namespace MicrosoftLoggingSample;
 
 public static class LoggerHelper
 {
-    private static readonly (LogLevel, SourceLevels)[] levelMapping = new[]
-    {
+    private static readonly (LogLevel, SourceLevels)[] levelMapping =
+    [
         (LogLevel.Critical, SourceLevels.Critical),
         (LogLevel.Error, SourceLevels.Error),
         (LogLevel.Warning, SourceLevels.Warning),
         (LogLevel.Information, SourceLevels.Information),
         (LogLevel.Debug, SourceLevels.Verbose),
-    };
+        (LogLevel.Trace, SourceLevels.Verbose)
+    ];
 
     public static void ConfigureTraceSource(TraceSource traceSource, ILoggerFactory loggerFactory)
     {
