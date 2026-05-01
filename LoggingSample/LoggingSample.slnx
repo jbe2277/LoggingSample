@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.props" />
+  </Folder>
+  <Project Path="MicrosoftLoggingSample/MicrosoftLoggingSample.csproj" />
+  <Project Path="NLogCodeSample/NLogCodeSample.csproj" />
+  <Project Path="NLogConfigSample/NLogConfigSample.csproj" />
+  <Project Path="SampleLibrary/SampleLibrary.csproj" />
+  <Project Path="SampleLibrary2.Test/SampleLibrary2.Test.csproj" />
+  <Project Path="SampleLibrary2/SampleLibrary2.csproj" />
+</Solution>
